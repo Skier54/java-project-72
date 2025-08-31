@@ -44,5 +44,6 @@ sonar {
     properties {
         property("sonar.projectKey", "Skier54_java-project-72")
         property("sonar.organization", "skier54")
+        property("sonar.host.url", "https://sonarcloud.io")
     }
 }
