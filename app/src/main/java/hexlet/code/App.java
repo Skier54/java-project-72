@@ -8,7 +8,7 @@ public class App {
         var app = Javalin.create(config -> {
             config.bundledPlugins.enableDevLogging();
         });
-        app.get("/welcome", ctx -> ctx.result("Welcome to Hexlet!"));
+
         app.get("/", ctx -> ctx.result("Hello World"));
         return app;
     }
@@ -17,4 +17,5 @@ public class App {
         Javalin app = getApp();
         app.start(7070);
     }
+
 }
