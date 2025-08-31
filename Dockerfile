@@ -1,4 +1,4 @@
-FROM gradle:8.12.1-jdk21
+FROM gradle:8.10-jdk23
 
 WORKDIR /app
 
@@ -8,3 +8,4 @@ RUN ["./gradlew", "clean", "build"]
 
 
 CMD ["./gradlew", "run"]
+
