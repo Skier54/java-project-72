@@ -26,6 +26,7 @@ application {
 dependencies {
     implementation("com.h2database:h2:2.3.232")
     implementation("com.zaxxer:HikariCP:7.0.2")
+    implementation("org.postgresql:postgresql:42.7.7")
 
     implementation("io.javalin:javalin:6.7.0")
     implementation("io.javalin:javalin-bundle:6.7.0")
