@@ -6,7 +6,7 @@ plugins {
     id("org.sonarqube") version "6.3.1.5724"
     id("io.freefair.lombok") version "8.14.2"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    java
+    id("java")
     checkstyle
     application
     jacoco
@@ -24,9 +24,13 @@ application {
 }
 
 dependencies {
+    implementation("com.h2database:h2:2.3.232")
+    implementation("com.zaxxer:HikariCP:7.0.2")
     implementation("io.javalin:javalin:6.7.0")
-    implementation("org.slf4j:slf4j-simple:2.0.17")
+    implementation("io.javalin:javalin-bundle:6.7.0")
     implementation("io.javalin:javalin-rendering:6.7.0")
+    implementation("org.slf4j:slf4j-simple:2.0.17")
+    implementation("gg.jte:jte:3.1.9")
     testImplementation(platform("org.junit:junit-bom:5.12.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.platform:junit-platform-launcher")
@@ -36,6 +40,13 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
+    testLogging {
+        exceptionFormat = TestExceptionFormat.FULL
+        events = mutableSetOf(TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED)
+        // showStackTraces = true
+        // showCauses = true
+        showStandardStreams = true
+    }
 }
 
 tasks.jacocoTestReport { reports { xml.required.set(true) } }
