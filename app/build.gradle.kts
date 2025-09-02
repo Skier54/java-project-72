@@ -31,8 +31,8 @@ dependencies {
     implementation("io.javalin:javalin-bundle:6.7.0")
     implementation("io.javalin:javalin-rendering:6.7.0")
 
-    //implementation("org.slf4j:slf4j-simple:2.0.17")
-    implementation("ch.qos.logback:logback-classic:1.5.18")
+    implementation("org.slf4j:slf4j-simple:2.0.17")
+    //implementation("ch.qos.logback:logback-classic:1.5.18")
     implementation("gg.jte:jte:3.2.1")
 
     testImplementation(platform("org.junit:junit-bom:5.12.2"))
