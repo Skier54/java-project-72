@@ -4,7 +4,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 plugins {
     id("com.github.ben-manes.versions") version "0.52.0"
     id("org.sonarqube") version "6.3.1.5724"
-    id("io.freefair.lombok") version "8.14.2"
+    id("io.freefair.lombok") version "8.12.1"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("java")
     checkstyle
@@ -36,7 +36,7 @@ dependencies {
     //implementation("ch.qos.logback:logback-classic:1.5.18")
     implementation("gg.jte:jte:3.2.1")
 
-    testImplementation(platform("org.junit:junit-bom:5.12.2"))
+    testImplementation(platform("org.junit:junit-bom:5.11.4"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.platform:junit-platform-launcher")
 
@@ -60,6 +60,6 @@ sonar {
     properties {
         property("sonar.projectKey", "Skier54_java-project-72")
         property("sonar.organization", "skier54")
-        property("sonar.host.url", "https://sonarcloud.io")
+        //property("sonar.host.url", "https://sonarcloud.io")
     }
 }
