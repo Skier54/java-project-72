@@ -26,11 +26,15 @@ application {
 dependencies {
     implementation("com.h2database:h2:2.3.232")
     implementation("com.zaxxer:HikariCP:7.0.2")
+
     implementation("io.javalin:javalin:6.7.0")
     implementation("io.javalin:javalin-bundle:6.7.0")
     implementation("io.javalin:javalin-rendering:6.7.0")
-    implementation("org.slf4j:slf4j-simple:2.0.17")
-    implementation("gg.jte:jte:3.1.9")
+
+    //implementation("org.slf4j:slf4j-simple:2.0.17")
+    implementation("ch.qos.logback:logback-classic:1.5.18")
+    implementation("gg.jte:jte:3.2.0")
+
     testImplementation(platform("org.junit:junit-bom:5.12.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.junit.platform:junit-platform-launcher")
