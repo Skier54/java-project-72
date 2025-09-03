@@ -18,6 +18,10 @@ import java.util.stream.Collectors;
 
 //@Slf4j
 public class App {
+    private static int getPort() {
+        String port = System.getenv().getOrDefault("PORT", "7070");
+        return Integer.valueOf(port);
+    }
 
     private static String readResourceFile(String fileName) throws IOException {
         var inputStream = App.class.getClassLoader().getResourceAsStream(fileName);
@@ -55,9 +59,8 @@ public class App {
         return app;
     }
 
-    public static void main(String[] args) throws SQLException, IOException {
-        Javalin app = getApp();
-        app.start(8080);
+    public static void main(String[] args) throws IOException, SQLException {
+        var app = getApp();
+        app.start(getPort());
     }
-
 }
