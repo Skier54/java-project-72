@@ -7,7 +7,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("org.sonarqube") version "6.3.1.5724"
     id("checkstyle")
-    java
+    //java
     application
     jacoco
 }
@@ -26,18 +26,27 @@ application {
 dependencies {
     implementation("com.h2database:h2:2.3.232")
     implementation("org.postgresql:postgresql:42.7.5")
-    implementation("com.zaxxer:HikariCP:6.3.0")
+    implementation("com.zaxxer:HikariCP:6.3.0") {
+        exclude(group = "org.slf4j")
+    }
 
     implementation("com.fasterxml.jackson.core:jackson-databind:2.18.0")
     implementation("org.apache.commons:commons-text:1.13.1")
 
-    implementation("io.javalin:javalin:6.6.0")
-    implementation("io.javalin:javalin-bundle:6.6.0")
-    implementation("io.javalin:javalin-rendering:6.6.0")
-
+    implementation("io.javalin:javalin:6.6.0") {
+        exclude(group = "ch.qos.logback")
+        exclude(group = "org.slf4j")
+    }
+    implementation("io.javalin:javalin-bundle:6.6.0") {
+        exclude(group = "ch.qos.logback")
+        exclude(group = "org.slf4j")
+    }
+    implementation("io.javalin:javalin-rendering:6.6.0") {
+        exclude(group = "ch.qos.logback")
+        exclude(group = "org.slf4j")
+    }
     implementation("gg.jte:jte:3.2.0")
     implementation("org.slf4j:slf4j-simple:2.0.9")
-
     implementation ("org.jsoup:jsoup:1.19.1")
     implementation ("com.konghq:unirest-java:3.13.0")
 
@@ -50,6 +59,12 @@ dependencies {
     //testImplementation("org.junit.platform:junit-platform-launcher")
 
 
+}
+
+configurations.all {
+    exclude(group = "ch.qos.logback")
+    exclude(group = "org.slf4j", module = "slf4j-log4j12")
+    exclude(group = "org.slf4j", module = "jul-to-slf4j")
 }
 
 tasks.test {
