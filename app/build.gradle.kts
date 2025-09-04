@@ -52,8 +52,8 @@ dependencies {
 
     testImplementation("org.assertj:assertj-core:3.27.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.12.2")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation ("com.squareup.okhttp3:mockwebserver:4.12.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     //testImplementation(platform("org.junit:junit-bom:5.11.4"))
     //testImplementation("org.junit.jupiter:junit-jupiter")
     //testImplementation("org.junit.platform:junit-platform-launcher")
