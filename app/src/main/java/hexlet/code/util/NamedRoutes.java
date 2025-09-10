@@ -20,4 +20,5 @@ public class NamedRoutes {
     public static String urlPath(String id) {
         return "/urls/" + id;
     }
+
 }
