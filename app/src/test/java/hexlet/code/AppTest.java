@@ -35,9 +35,9 @@ class AppTest {
     }
 
     @Test
-    public void testBuildUrlPage() {
+    public void testUrlsPagePost() {
         JavalinTest.test(app, (server, client) -> {
-            var response = client.get("/users/build");
+            var response = client.post("/urls");
             assertThat(response.code()).isEqualTo(200);
         });
     }
