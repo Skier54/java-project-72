@@ -26,4 +26,20 @@ class AppTest {
         });
     }
 
+    @Test
+    public void testUrlsPage() {
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.get("/urls");
+            assertThat(response.code()).isEqualTo(200);
+        });
+    }
+
+    @Test
+    public void testBuildUrlPage() {
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.get("/users/build");
+            assertThat(response.code()).isEqualTo(200);
+        });
+    }
+
 }
