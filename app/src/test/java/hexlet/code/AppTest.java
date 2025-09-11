@@ -73,6 +73,10 @@ class AppTest {
             assertThat(saved.getName()).isEqualTo("https://uchi.ru");
             assertThat(saved.getId()).isGreaterThan(0);
             assertThat(saved.getCreatedAt()).isNotNull();
+
+            var responseGet = client.get("/urls");
+            assertThat(responseGet.code()).isEqualTo(200);
+            assertThat(responseGet.body().string()).contains("https://uchi.ru");
         });
     }
 
