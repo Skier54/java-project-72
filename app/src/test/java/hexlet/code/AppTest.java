@@ -7,10 +7,7 @@ import hexlet.code.util.ParserUrls;
 import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
 import okhttp3.mockwebserver.MockWebServer;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -110,4 +107,36 @@ class AppTest {
         });
     }
 
+    @Test
+    public void testValidHttpUrl() throws Exception {
+        String result = ParserUrls.parseUrl("http://example.com");
+        Assertions.assertEquals("http://example.com", result);
+    }
+
+    @Test
+    public void testValidHttpsUrl() throws Exception {
+        String result = ParserUrls.parseUrl("https://example.com:8080");
+        Assertions.assertEquals("https://example.com:8080", result);
+    }
+
+    @Test
+    public void testInvalidProtocol() {
+        Assertions.assertThrows(MalformedURLException.class, () -> {
+            ParserUrls.parseUrl("ftp://example.com");
+        });
+    }
+
+    @Test
+    public void testInvalidFormat() {
+        Assertions.assertThrows(MalformedURLException.class, () -> {
+            ParserUrls.parseUrl("example.com");
+        });
+    }
+
+    @Test
+    public void testInvalidUri() {
+        Assertions.assertThrows(MalformedURLException.class, () -> {
+            ParserUrls.parseUrl("invalid://url");
+        });
+    }
 }

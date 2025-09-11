@@ -26,7 +26,7 @@ public class ParserUrls {
             }
 
             return domain.toString();
-        } catch (URISyntaxException e) {
+        } catch (URISyntaxException | IllegalArgumentException e) {
             throw new MalformedURLException("Некорректный URL");
         }
     }
