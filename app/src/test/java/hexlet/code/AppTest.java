@@ -140,16 +140,28 @@ class AppTest {
     }
 
     @Test
-    public void testInvalidUri() {
+    public void testHostWithoutDot() {
         Assertions.assertThrows(MalformedURLException.class, () -> {
-            ParserUrls.parseUrl("invalid://url");
+            ParserUrls.parseUrl("http://localhost");
+        });
+
+        Assertions.assertThrows(MalformedURLException.class, () -> {
+            ParserUrls.parseUrl("http://test");
+        });
+
+        Assertions.assertThrows(MalformedURLException.class, () -> {
+            ParserUrls.parseUrl("http://123");
         });
     }
 
     @Test
-    public void testEmptyString() {
+    public void testNullOrEmptyHost() {
         Assertions.assertThrows(MalformedURLException.class, () -> {
-            ParserUrls.parseUrl("");
+            ParserUrls.parseUrl("http://");
+        });
+
+        Assertions.assertThrows(MalformedURLException.class, () -> {
+            ParserUrls.parseUrl("http://null");
         });
     }
 }
