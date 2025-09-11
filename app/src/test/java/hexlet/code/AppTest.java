@@ -6,6 +6,9 @@ import hexlet.code.util.NamedRoutes;
 import hexlet.code.util.ParserUrls;
 import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
+import okhttp3.mockwebserver.MockWebServer;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,10 +21,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class AppTest {
     private static Javalin app;
+    public static MockWebServer mockWebServer;
 
     @BeforeEach
     public void setUp() throws SQLException, IOException {
         app = App.getApp();
+    }
+
+    @BeforeAll
+    static void serverStart() throws IOException {
+        mockWebServer = new MockWebServer();
+        mockWebServer.start();
+    }
+
+    @AfterAll
+    static void serverOff() throws IOException {
+        mockWebServer.shutdown();
     }
 
     @Test
@@ -41,10 +56,35 @@ class AppTest {
     }
 
     @Test
-    public void testUrlsPagePost() {
+    public void testCreateUrl() {
         JavalinTest.test(app, (server, client) -> {
-            var response = client.post("/urls");
+            var requestBody = "url=https://uchi.ru";
+            var response = client.post("/urls", requestBody);
+
+            assertThat(response.code()).isIn(200, 302);
+
+            var maybeUrl = UrlRepository.findByName("https://uchi.ru");
+            assertThat(maybeUrl).isPresent();
+
+            var saved = maybeUrl.get();
+            assertThat(saved.getName()).isEqualTo("https://uchi.ru");
+            assertThat(saved.getId()).isGreaterThan(0);
+            assertThat(saved.getCreatedAt()).isNotNull();
+        });
+    }
+
+    @Test
+    public void testFindByName() throws SQLException, MalformedURLException {
+        var url = new Url("https://uchi.ru");
+        UrlRepository.save(url);
+
+        var entity = UrlRepository.findByName("https://uchi.ru");
+        assertThat(entity).isPresent();
+
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.get(NamedRoutes.urlPath(entity.get().getId()));
             assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string()).contains("https://uchi.ru");
         });
     }
 
@@ -69,4 +109,5 @@ class AppTest {
                     .contains("https://uchi.ru");
         });
     }
+
 }
