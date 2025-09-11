@@ -145,4 +145,11 @@ class AppTest {
             ParserUrls.parseUrl("invalid://url");
         });
     }
+
+    @Test
+    public void testEmptyString() {
+        Assertions.assertThrows(MalformedURLException.class, () -> {
+            ParserUrls.parseUrl("");
+        });
+    }
 }
