@@ -19,14 +19,10 @@
             <main>
                 <h1>Добро пожаловать на главную страницу</h1>
                 <a href="/">Анализатор страниц</a>
-                <ul>
-                    <li>
-                        <a class="nav-link" href="${NamedRoutes.rootPath()}">Анализатор страниц</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="${NamedRoutes.urlsPath()}">Сайты</a>
-                    </li>
-                </ul>
+                <div>
+                    <p><a class="nav-link" href="${NamedRoutes.rootPath()}">Главная</a></p>
+                    <p><a class="nav-link" href="${NamedRoutes.urlsPath()}">Сайты</a></p>
+                </div>
             </main>
         </div>
         @if(page != null && page.getFlash() != null)

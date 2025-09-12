@@ -61,6 +61,9 @@ public class UrlsController {
         UrlRepository.save(url);
         ctx.sessionAttribute("flash", "Страница успешно добавлена");
         ctx.redirect("/urls");
+    }
+
+    public static void check(Context ctx) throws SQLException {
 
     }
 }
