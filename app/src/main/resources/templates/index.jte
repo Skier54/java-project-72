@@ -18,10 +18,12 @@
         <div class="mx-auto p-4 py-md-5">
             <main>
                 <h1>Добро пожаловать на главную страницу</h1>
-                <a href="/">Анализатор страниц</a>
-                <div>
-                    <p><a class="nav-link" href="${NamedRoutes.rootPath()}">Главная</a></p>
-                    <p><a class="nav-link" href="${NamedRoutes.urlsPath()}">Сайты</a></p>
+                <div style="display: flex; align-items: center;">
+                    <h4><a href="/" style="text-decoration: none;">Анализатор страниц</a></h4>
+                    <div style="display: inline-flex; margin-left: 20px;">
+                        <a class="nav-link" href="${NamedRoutes.rootPath()}">Главная</a>
+                        <a class="nav-link" href="${NamedRoutes.urlsPath()}" style="margin-left: 20px;">Сайты</a>
+                    </div>
                 </div>
             </main>
         </div>

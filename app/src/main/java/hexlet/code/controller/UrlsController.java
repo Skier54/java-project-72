@@ -4,10 +4,17 @@ import hexlet.code.dto.urls.BuildPage;
 import hexlet.code.dto.urls.UrlPage;
 import hexlet.code.dto.urls.UrlsPage;
 import hexlet.code.model.Url;
+import hexlet.code.model.UrlCheck;
+import hexlet.code.repository.UrlCheckRepository;
 import hexlet.code.repository.UrlRepository;
+import hexlet.code.util.NamedRoutes;
 import hexlet.code.util.ParserUrls;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
+import kong.unirest.UnirestException;
+import org.jsoup.Jsoup;
 
 import java.net.MalformedURLException;
 import java.sql.SQLException;
@@ -17,7 +24,8 @@ import static io.javalin.rendering.template.TemplateUtil.model;
 public class UrlsController {
     public static void index(Context ctx) throws SQLException {
         var urls = UrlRepository.getEntities();
-        var page = new UrlsPage(urls);
+        var lastChecks =  UrlCheckRepository.findLastCheck();
+        var page = new UrlsPage(urls, lastChecks);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render("urls/build.jte", model("page", page));
     }
@@ -28,6 +36,9 @@ public class UrlsController {
                 .orElseThrow(() -> new NotFoundResponse("Url-адрес не найден"));
 
         var page = new UrlPage(url);
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
+        var urlChecks = UrlCheckRepository.findCheck(id);
+        page.getUrl().setUrlCheck(urlChecks);
         ctx.render("urls/show.jte", model("page", page));
     }
 
@@ -64,6 +75,26 @@ public class UrlsController {
     }
 
     public static void check(Context ctx) throws SQLException {
+        var id = ctx.pathParamAsClass("id", Long.class).get();
+        var url = UrlRepository.find(id)
+                .orElseThrow(() -> new NotFoundResponse("Url-адрес не найден"));
 
+        try {
+            HttpResponse<String> response = Unirest.get(url.getName()).asString();
+            var doc = Jsoup.parse(response.getBody());
+            var statusCode = response.getStatus();
+            var title = doc.title();
+            var h1 = doc.select("h1").text();
+            var description = doc.select("meta[name=description]").attr("content");
+            var urlCheck = new UrlCheck(statusCode, title, h1, description, id);
+            UrlCheckRepository.saveCheck(urlCheck);
+            ctx.sessionAttribute("flash", "Сайт успешно проверен");
+            ctx.redirect(NamedRoutes.urlPath(id));
+        } catch (SQLException | UnirestException e) {
+            UrlPage page = new UrlPage(url);
+            ctx.sessionAttribute("flash", "не удается установить соединение");
+            page.setFlash(ctx.consumeSessionAttribute("flash"));
+            ctx.render("urls/show.jte", model("page", page));
+        }
     }
 }
