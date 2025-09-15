@@ -186,4 +186,26 @@ class AppTest {
         assertThat(savedCheck.getDescription()).isEqualTo("Test Description");
         assertThat(savedCheck.getUrlId()).isEqualTo(url.getId());
     }
+
+    @Test
+    void testFindLastCheck_SingleUrl() throws SQLException, InterruptedException {
+        var url = new Url("https://single.com");
+        UrlRepository.save(url);
+
+        var check1 = new UrlCheck(200, "H1-1", "Title-1", "Desc-1", url.getId());
+        var check2 = new UrlCheck(404, "H1-2", "Title-2", "Desc-2", url.getId());
+
+        UrlCheckRepository.saveCheck(check1);
+        Thread.sleep(10);
+        UrlCheckRepository.saveCheck(check2);
+
+        var lastChecks = UrlCheckRepository.findLastCheck();
+
+        assertThat(lastChecks.size()).isEqualTo(1);
+        var lastCheck = lastChecks.get(url.getId());
+        assertThat(lastCheck.getStatusCode()).isEqualTo(404);
+        assertThat(lastCheck.getH1()).isEqualTo("H1-2");
+        assertThat(lastCheck.getTitle()).isEqualTo("Title-2");
+        assertThat(lastCheck.getDescription()).isEqualTo("Desc-2");
+    }
 }
