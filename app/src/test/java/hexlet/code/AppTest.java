@@ -188,7 +188,7 @@ class AppTest {
     }
 
     @Test
-    void testFindLastCheck_SingleUrl() throws SQLException, InterruptedException {
+    void testFindLastCheckSingleUrl() throws SQLException, InterruptedException {
         var url = new Url("https://single.com");
         UrlRepository.save(url);
 
