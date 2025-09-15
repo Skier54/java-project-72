@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.sql.SQLException;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -242,6 +243,14 @@ class AppTest {
             assertThat(check.getDescription()).isEqualTo("description");
             assertThat(check.getUrlId()).isEqualTo(websiteId);
             assertThat(check.getCreatedAt()).isNotNull();
+        });
+    }
+    @Test
+    public void testCreateWithEmptyUrl() {
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.post("/urls", Map.of("url", ""));
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string()).contains("Поле не должно быть пустым");
         });
     }
 }
