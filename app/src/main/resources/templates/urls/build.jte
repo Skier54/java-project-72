@@ -9,7 +9,7 @@
     content = @`
         <div class="mx-auto p-4 py-md-5">
             <main>
-                <h1>Все сайты</h1>
+                <h1>Сайты</h1>
                 <table class="table table-bordered table-hover mt-3 w-75">
                     <thead style="border-bottom: 1px solid #dee2e6 !important;">
                         <tr>

@@ -1,6 +1,8 @@
 package hexlet.code;
 
 import hexlet.code.model.Url;
+import hexlet.code.model.UrlCheck;
+import hexlet.code.repository.UrlCheckRepository;
 import hexlet.code.repository.UrlRepository;
 import hexlet.code.util.NamedRoutes;
 import hexlet.code.util.ParserUrls;
@@ -167,5 +169,21 @@ class AppTest {
         Assertions.assertThrows(MalformedURLException.class, () -> {
             ParserUrls.parseUrl("http://null");
         });
+    }
+
+    @Test
+    public void testCheckUrl() throws SQLException {
+        var url = new Url("https://example.com");
+        UrlRepository.save(url);
+
+        var urlCheck = new UrlCheck(200, "Test H1", "Test Title", "Test Description", url.getId());
+        UrlCheckRepository.saveCheck(urlCheck);
+
+        var savedCheck = UrlCheckRepository.findCheck(url.getId()).get(0);
+        assertThat(savedCheck.getStatusCode()).isEqualTo(200);
+        assertThat(savedCheck.getH1()).isEqualTo("Test H1");
+        assertThat(savedCheck.getTitle()).isEqualTo("Test Title");
+        assertThat(savedCheck.getDescription()).isEqualTo("Test Description");
+        assertThat(savedCheck.getUrlId()).isEqualTo(url.getId());
     }
 }
