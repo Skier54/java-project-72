@@ -8,13 +8,14 @@ import hexlet.code.util.NamedRoutes;
 import hexlet.code.util.ParserUrls;
 import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
+import io.micrometer.core.instrument.util.IOUtils;
+import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-
+import org.junit.jupiter.api.Test;
 
 
 import java.io.IOException;
@@ -176,13 +177,13 @@ class AppTest {
         var url = new Url("https://example.com");
         UrlRepository.save(url);
 
-        var urlCheck = new UrlCheck(200, "Test H1", "Test Title", "Test Description", url.getId());
+        var urlCheck = new UrlCheck(200, "Test Title", "Test H1", "Test Description", url.getId());
         UrlCheckRepository.saveCheck(urlCheck);
 
         var savedCheck = UrlCheckRepository.findCheck(url.getId()).get(0);
         assertThat(savedCheck.getStatusCode()).isEqualTo(200);
-        assertThat(savedCheck.getH1()).isEqualTo("Test H1");
         assertThat(savedCheck.getTitle()).isEqualTo("Test Title");
+        assertThat(savedCheck.getH1()).isEqualTo("Test H1");
         assertThat(savedCheck.getDescription()).isEqualTo("Test Description");
         assertThat(savedCheck.getUrlId()).isEqualTo(url.getId());
     }
@@ -192,8 +193,8 @@ class AppTest {
         var url = new Url("https://single.com");
         UrlRepository.save(url);
 
-        var check1 = new UrlCheck(200, "H1-1", "Title-1", "Desc-1", url.getId());
-        var check2 = new UrlCheck(404, "H1-2", "Title-2", "Desc-2", url.getId());
+        var check1 = new UrlCheck(200, "Title-1", "H1-1", "Desc-1", url.getId());
+        var check2 = new UrlCheck(404, "Title-2", "H1-2", "Desc-2", url.getId());
 
         UrlCheckRepository.saveCheck(check1);
         Thread.sleep(10);
@@ -204,9 +205,44 @@ class AppTest {
         assertThat(lastChecks.size()).isEqualTo(1);
         var lastCheck = lastChecks.get(url.getId());
         assertThat(lastCheck.getStatusCode()).isEqualTo(404);
-        assertThat(lastCheck.getH1()).isEqualTo("H1-2");
         assertThat(lastCheck.getTitle()).isEqualTo("Title-2");
+        assertThat(lastCheck.getH1()).isEqualTo("H1-2");
         assertThat(lastCheck.getDescription()).isEqualTo("Desc-2");
+    }
+
+    @Test
+    public void testChecks() throws SQLException {
+        var baseUrl = String.format("http://localhost:%s", mockWebServer.getPort());
+        var stream = this.getClass().getClassLoader().getResourceAsStream("testHtml.html");
+        var htmlBody = IOUtils.toString(stream);
+
+        var mockResponse = new MockResponse()
+                .setHeader("Content-Type", "text/html; charset=utf-8")
+                .setBody(htmlBody);
+        mockWebServer.enqueue(mockResponse);
+
+        var website = new Url(baseUrl);
+        UrlRepository.save(website);
+
+        var savedWebsite = UrlRepository.findByName(baseUrl);
+        assertThat(savedWebsite).isPresent();
+        var websiteId = savedWebsite.get().getId();
+
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.post(NamedRoutes.urlChecksPath(websiteId));
+            assertThat(response.code()).isIn(200, 302);
+
+            var checks = UrlCheckRepository.findCheck(websiteId);
+            assertThat(checks).isNotEmpty();
+
+            var check = checks.get(0);
+            assertThat(check.getStatusCode()).isEqualTo(200);
+            assertThat(check.getTitle()).isEqualTo("Hello");
+            assertThat(check.getH1()).isEqualTo("Hello h");
+            assertThat(check.getDescription()).isEqualTo("description");
+            assertThat(check.getUrlId()).isEqualTo(websiteId);
+            assertThat(check.getCreatedAt()).isNotNull();
+        });
     }
 }
 

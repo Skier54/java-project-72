@@ -11,7 +11,6 @@ import hexlet.code.util.NamedRoutes;
 import hexlet.code.util.ParserUrls;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
-import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
 import org.jsoup.Jsoup;
@@ -80,7 +79,7 @@ public class UrlsController {
                 .orElseThrow(() -> new NotFoundResponse("Url-адрес не найден"));
 
         try {
-            HttpResponse<String> response = Unirest.get(url.getName()).asString();
+            var response = Unirest.get(url.getName()).asString();
             var doc = Jsoup.parse(response.getBody());
             var statusCode = response.getStatus();
             var title = doc.title();
