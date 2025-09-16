@@ -49,6 +49,7 @@ dependencies {
     implementation("org.slf4j:slf4j-simple:2.0.9")
     implementation ("org.jsoup:jsoup:1.19.1")
     implementation ("com.konghq:unirest-java:3.13.0")
+    implementation("org.jsoup:jsoup:1.21.2")
 
     testImplementation("org.assertj:assertj-core:3.27.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.12.2")
