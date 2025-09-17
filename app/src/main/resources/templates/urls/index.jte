@@ -12,15 +12,14 @@
                     <h1 class="display-3 mb-0">Анализатор страниц</h1>
                     <p class="lead">Проверка сайта на SEO пригодность</p>
                     <div class="row">
-                        <label class="col">
-                            <input type="text" name="url" class="form-control w-100 form-floating" value="${page.getName()}" placeholder="ссылка">
+                        <label class="col-10">
+                            <input type="text" name="url" class="form-control-lg w-100 form-floating" value="${page.getName()}" placeholder="ссылка">
                         </label>
-                        <input type="submit" class="col-auto btn btn-primary" value="сохранить">
+                        <input type="submit" class="col-2 btn btn-primary btn-lg" value="сохранить">
                         <p class="mt-2 mb-0 text-secondary">Пример: https://www.example.com</p>
                     </div>
                 </form>
             </div>
         </section>
-        <section class="flex-grow-1 container-fluid bg-white p-5"></section>
     `
 )

@@ -29,8 +29,9 @@
             </div>
         </nav>
         @if(page != null && page.getFlash() != null)
-            <div>
-                <p>${page.getFlash()}</p>
+            <div class="alert alert-${page.getFlashType()} alert-dismissible fade show mb-0">
+                <p class="m-0">${page.getFlash()}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
         <div>

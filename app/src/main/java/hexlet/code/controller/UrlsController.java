@@ -26,6 +26,7 @@ public class UrlsController {
         var lastChecks =  UrlCheckRepository.findLastCheck();
         var page = new UrlsPage(urls, lastChecks);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
+        page.setFlashType(ctx.consumeSessionAttribute("flashType"));
         ctx.render("urls/build.jte", model("page", page));
     }
 
@@ -36,6 +37,7 @@ public class UrlsController {
 
         var page = new UrlPage(url);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
+        page.setFlashType(ctx.consumeSessionAttribute("flashType"));
         var urlChecks = UrlCheckRepository.findCheck(id);
         page.getUrl().setUrlCheck(urlChecks);
         ctx.render("urls/show.jte", model("page", page));
@@ -46,7 +48,9 @@ public class UrlsController {
         if (name == null || name.trim().isEmpty()) {
             BuildPage page = new BuildPage(name);
             ctx.sessionAttribute("flash", "Поле не должно быть пустым");
+            ctx.sessionAttribute("flashType", "danger");
             page.setFlash(ctx.consumeSessionAttribute("flash"));
+            page.setFlashType(ctx.consumeSessionAttribute("flashType"));
             ctx.render("urls/index.jte", model("page", page));
             return;
         }
@@ -55,14 +59,17 @@ public class UrlsController {
             nameParser = ParserUrls.parseUrl(nameParser);
         } catch (MalformedURLException e) {
             ctx.sessionAttribute("flash", "Некорректный URL");
+            ctx.sessionAttribute("flashType", "danger");
             BuildPage page = new BuildPage(name);
             page.setFlash(ctx.consumeSessionAttribute("flash"));
+            page.setFlashType(ctx.consumeSessionAttribute("flashType"));
             ctx.render("urls/index.jte", model("page", page));
             return;
         }
 
         if (UrlRepository.findByName(nameParser).isPresent()) {
             ctx.sessionAttribute("flash", "Страница уже существует");
+            ctx.sessionAttribute("flashType", "warning");
             ctx.redirect("/urls");
             return;
         }
@@ -70,6 +77,7 @@ public class UrlsController {
         var url = new Url(nameParser);
         UrlRepository.save(url);
         ctx.sessionAttribute("flash", "Страница успешно добавлена");
+        ctx.sessionAttribute("flashType", "success");
         ctx.redirect("/urls");
     }
 
@@ -88,11 +96,14 @@ public class UrlsController {
             var urlCheck = new UrlCheck(statusCode, title, h1, description, id);
             UrlCheckRepository.saveCheck(urlCheck);
             ctx.sessionAttribute("flash", "Сайт успешно проверен");
+            ctx.sessionAttribute("flashType", "success");
             ctx.redirect(NamedRoutes.urlPath(id));
         } catch (SQLException | UnirestException e) {
             UrlPage page = new UrlPage(url);
             ctx.sessionAttribute("flash", "не удается установить соединение");
+            ctx.sessionAttribute("flashType", "danger");
             page.setFlash(ctx.consumeSessionAttribute("flash"));
+            page.setFlashType(ctx.consumeSessionAttribute("flashType"));
             ctx.render("urls/show.jte", model("page", page));
         }
     }
