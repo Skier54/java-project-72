@@ -13,7 +13,7 @@
                     <p class="lead">Проверка сайта на SEO пригодность</p>
                     <div class="row">
                         <label class="col">
-                            <input type="url" name="url" class="form-control w-100 form-floating" value="${page.getName()}" placeholder="ссылка">
+                            <input type="text" name="url" class="form-control w-100 form-floating" value="${page.getName()}" placeholder="ссылка">
                         </label>
                         <input type="submit" class="col-auto btn btn-primary" value="сохранить">
                         <p class="mt-2 mb-0 text-secondary">Пример: https://www.example.com</p>
@@ -21,6 +21,6 @@
                 </form>
             </div>
         </section>
-        <section lass="flex-grow-1 container-fluid bg-white p-5"></section>
+        <section class="flex-grow-1 container-fluid bg-white p-5"></section>
     `
 )
