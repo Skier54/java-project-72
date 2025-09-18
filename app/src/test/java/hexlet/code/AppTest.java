@@ -43,11 +43,6 @@ class AppTest {
         mockWebServer.start();
     }
 
-    @AfterAll
-    static void serverOff() throws IOException {
-        mockWebServer.shutdown();
-    }
-
     @Test
     void testRootPage() throws Exception {
         JavalinTest.test(app, (server, client) -> {
@@ -255,6 +250,11 @@ class AppTest {
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string()).contains("Поле не должно быть пустым");
         });
+    }
+
+    @AfterAll
+    static void serverOff() throws IOException {
+        mockWebServer.shutdown();
     }
 }
 
