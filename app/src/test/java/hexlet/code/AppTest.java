@@ -33,6 +33,8 @@ class AppTest {
     @BeforeEach
     public void setUp() throws SQLException, IOException {
         app = App.getApp();
+        UrlRepository.clear();
+        UrlCheckRepository.clear();
     }
 
     @BeforeAll
@@ -238,13 +240,14 @@ class AppTest {
 
             var check = checks.get(0);
             assertThat(check.getStatusCode()).isEqualTo(200);
-            assertThat(check.getTitle()).isEqualTo("Hello");
-            assertThat(check.getH1()).isEqualTo("Hello h");
+            assertThat(check.getTitle()).isEqualTo("Привет");
+            assertThat(check.getH1()).isEqualTo("Пока");
             assertThat(check.getDescription()).isEqualTo("description");
             assertThat(check.getUrlId()).isEqualTo(websiteId);
             assertThat(check.getCreatedAt()).isNotNull();
         });
     }
+
     @Test
     public void testCreateWithEmptyUrl() {
         JavalinTest.test(app, (server, client) -> {

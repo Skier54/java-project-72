@@ -2,15 +2,14 @@ package hexlet.code.util;
 
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 
 public class ParserUrls {
+
     public static String parseUrl(String url) throws MalformedURLException {
         try {
-            URI uri = new URI(url);
-            URL result = uri.toURL();
+            URL result = URI.create(url).toURL();
 
             if (!isValidUrl(result)) {
                 throw new MalformedURLException("Некорректный URL");
@@ -26,7 +25,7 @@ public class ParserUrls {
             }
 
             return domain.toString();
-        } catch (URISyntaxException | IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             throw new MalformedURLException("Некорректный URL");
         }
     }
@@ -47,3 +46,5 @@ public class ParserUrls {
         return true;
     }
 }
+
+

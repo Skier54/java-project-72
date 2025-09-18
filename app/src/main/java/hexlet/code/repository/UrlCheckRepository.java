@@ -85,4 +85,15 @@ public class UrlCheckRepository extends BaseRepository {
             return result;
         }
     }
+
+    public static void clear() {
+        try (var conn = dataSource.getConnection();
+             var stmt = conn.createStatement()) {
+
+            String sql = "DELETE FROM url_checks;";
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to clear the database", e);
+        }
+    }
 }

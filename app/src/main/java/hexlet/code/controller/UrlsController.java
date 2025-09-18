@@ -46,9 +46,9 @@ public class UrlsController {
     public static void create(Context ctx) throws SQLException {
         var name = ctx.formParam("url");
         if (name == null || name.trim().isEmpty()) {
-            BuildPage page = new BuildPage(name);
             ctx.sessionAttribute("flash", "Поле не должно быть пустым");
             ctx.sessionAttribute("flashType", "danger");
+            BuildPage page = new BuildPage(name);
             page.setFlash(ctx.consumeSessionAttribute("flash"));
             page.setFlashType(ctx.consumeSessionAttribute("flashType"));
             ctx.render("urls/index.jte", model("page", page));
@@ -99,9 +99,9 @@ public class UrlsController {
             ctx.sessionAttribute("flashType", "success");
             ctx.redirect(NamedRoutes.urlPath(id));
         } catch (SQLException | UnirestException e) {
-            UrlPage page = new UrlPage(url);
             ctx.sessionAttribute("flash", "не удается установить соединение");
             ctx.sessionAttribute("flashType", "danger");
+            UrlPage page = new UrlPage(url);
             page.setFlash(ctx.consumeSessionAttribute("flash"));
             page.setFlashType(ctx.consumeSessionAttribute("flashType"));
             ctx.render("urls/show.jte", model("page", page));
