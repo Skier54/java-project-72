@@ -3,7 +3,7 @@
 
 @param BuildPage page
 
-@template.index(
+@template.layout.page(
     page = page,
     content = @`
         <section class="flex-grow-6 container-fluid bg-dark p-5">

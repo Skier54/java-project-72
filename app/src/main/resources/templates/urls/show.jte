@@ -4,7 +4,7 @@
 
 @param UrlPage page
 
-@template.index(
+@template.layout.page(
     page = page,
     content = @`
         <div class="container-lg mt-5">
