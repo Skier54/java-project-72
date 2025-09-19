@@ -80,19 +80,6 @@ public class UrlsController {
             ctx.render("urls/index.jte", model("page", page));
             return;
         }
-
-        //if (UrlRepository.findByName(nameParser).isPresent()) {
-        //    ctx.sessionAttribute("flash", "Страница уже существует");
-        //    ctx.sessionAttribute("flashType", "warning");
-        //    ctx.redirect("/urls");
-        //    return;
-        //}
-
-        //var url = new Url(nameParser);
-        //UrlRepository.save(url);
-        //ctx.sessionAttribute("flash", "Страница успешно добавлена");
-        //ctx.sessionAttribute("flashType", "success");
-        //ctx.redirect("/urls");
     }
 
     public static void check(Context ctx) throws SQLException {

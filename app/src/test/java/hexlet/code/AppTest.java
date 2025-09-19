@@ -142,39 +142,6 @@ class AppTest {
         });
     }
 
-//    @Test
-//    public void testInvalidFormat() {
-//        Assertions.assertThrows(MalformedURLException.class, () -> {
-//            ParserUrls.parseUrl("example.com");
-//        });
-//    }
-//
-//    @Test
-//    public void testHostWithoutDot() {
-//        Assertions.assertThrows(MalformedURLException.class, () -> {
-//            ParserUrls.parseUrl("http://localhost");
-//        });
-//
-//        Assertions.assertThrows(MalformedURLException.class, () -> {
-//            ParserUrls.parseUrl("http://test");
-//        });
-//
-//        Assertions.assertThrows(MalformedURLException.class, () -> {
-//            ParserUrls.parseUrl("http://123");
-//        });
-//    }
-//
-//    @Test
-//    public void testNullOrEmptyHost() {
-//        Assertions.assertThrows(MalformedURLException.class, () -> {
-//            ParserUrls.parseUrl("http://");
-//        });
-//
-//        Assertions.assertThrows(MalformedURLException.class, () -> {
-//            ParserUrls.parseUrl("http://null");
-//        });
-//    }
-
     @Test
     public void testCheckUrl() throws SQLException {
         var url = new Url("https://example.com");
