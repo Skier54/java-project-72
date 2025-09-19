@@ -57,28 +57,42 @@ public class UrlsController {
         String nameParser = name.trim();
         try {
             nameParser = ParserUrls.parseUrl(nameParser);
-        } catch (MalformedURLException e) {
+
+            if (UrlRepository.findByName(nameParser).isPresent()) {
+                ctx.sessionAttribute("flash", "Страница уже существует");
+                ctx.sessionAttribute("flashType", "warning");
+                ctx.redirect("/urls");
+                return;
+            }
+
+            var url = new Url(nameParser);
+            UrlRepository.save(url);
+            ctx.sessionAttribute("flash", "Страница успешно добавлена");
+            ctx.sessionAttribute("flashType", "success");
+            ctx.redirect("/urls");
+
+        } catch (IllegalArgumentException | MalformedURLException e) {
             ctx.sessionAttribute("flash", "Некорректный URL");
             ctx.sessionAttribute("flashType", "danger");
             BuildPage page = new BuildPage(name);
-            page.setFlash(ctx.consumeSessionAttribute("flash"));
-            page.setFlashType(ctx.consumeSessionAttribute("flashType"));
+            page.setFlash(ctx.sessionAttribute("flash")); // Используйте тут, а не consume с ошибкой
+            page.setFlashType(ctx.sessionAttribute("flashType"));
             ctx.render("urls/index.jte", model("page", page));
             return;
         }
 
-        if (UrlRepository.findByName(nameParser).isPresent()) {
-            ctx.sessionAttribute("flash", "Страница уже существует");
-            ctx.sessionAttribute("flashType", "warning");
-            ctx.redirect("/urls");
-            return;
-        }
+        //if (UrlRepository.findByName(nameParser).isPresent()) {
+        //    ctx.sessionAttribute("flash", "Страница уже существует");
+        //    ctx.sessionAttribute("flashType", "warning");
+        //    ctx.redirect("/urls");
+        //    return;
+        //}
 
-        var url = new Url(nameParser);
-        UrlRepository.save(url);
-        ctx.sessionAttribute("flash", "Страница успешно добавлена");
-        ctx.sessionAttribute("flashType", "success");
-        ctx.redirect("/urls");
+        //var url = new Url(nameParser);
+        //UrlRepository.save(url);
+        //ctx.sessionAttribute("flash", "Страница успешно добавлена");
+        //ctx.sessionAttribute("flashType", "success");
+        //ctx.redirect("/urls");
     }
 
     public static void check(Context ctx) throws SQLException {

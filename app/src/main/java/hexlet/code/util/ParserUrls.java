@@ -8,26 +8,27 @@ import java.net.URL;
 public class ParserUrls {
 
     public static String parseUrl(String url) throws MalformedURLException {
-        try {
-            URL result = URI.create(url).toURL();
 
-            if (!isValidUrl(result)) {
-                throw new MalformedURLException("Некорректный URL");
-            }
-
-            StringBuilder domain = new StringBuilder();
-            domain.append(result.getProtocol())
-                    .append("://")
-                    .append(result.getHost());
-
-            if (result.getPort() != -1) {
-                domain.append(':').append(result.getPort());
-            }
-
-            return domain.toString();
-        } catch (IllegalArgumentException e) {
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
             throw new MalformedURLException("Некорректный URL");
         }
+
+        URL result = URI.create(url).toURL();
+
+        if (!isValidUrl(result)) {
+            throw new MalformedURLException("Некорректный URL");
+        }
+
+        StringBuilder domain = new StringBuilder();
+        domain.append(result.getProtocol())
+                .append("://")
+                .append(result.getHost());
+
+        if (result.getPort() != -1) {
+            domain.append(':').append(result.getPort());
+        }
+
+        return domain.toString();
     }
 
     private static boolean isValidUrl(URL url) {
@@ -35,15 +36,7 @@ public class ParserUrls {
             return false;
         }
 
-        if (url.getHost() == null || url.getHost().isEmpty()) {
-            return false;
-        }
-
-        if (!url.getHost().contains(".")) {
-            return false;
-        }
-
-        return true;
+        return url.getHost() != null && !url.getHost().isEmpty();
     }
 }
 
