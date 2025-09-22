@@ -33,15 +33,15 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.18.0")
     implementation("org.apache.commons:commons-text:1.13.1")
 
-    implementation("io.javalin:javalin:6.6.0") {
+    implementation("io.javalin:javalin:6.7.0") {
         exclude(group = "ch.qos.logback")
         exclude(group = "org.slf4j")
     }
-    implementation("io.javalin:javalin-bundle:6.6.0") {
+    implementation("io.javalin:javalin-bundle:6.7.0") {
         exclude(group = "ch.qos.logback")
         exclude(group = "org.slf4j")
     }
-    implementation("io.javalin:javalin-rendering:6.6.0") {
+    implementation("io.javalin:javalin-rendering:6.7.0") {
         exclude(group = "ch.qos.logback")
         exclude(group = "org.slf4j")
     }
