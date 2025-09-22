@@ -1,6 +1,7 @@
 @import hexlet.code.dto.urls.UrlPage
 @import hexlet.code.util.NamedRoutes
 @import hexlet.code.model.UrlCheck
+@import java.time.format.DateTimeFormatter
 
 @param UrlPage page
 
@@ -21,7 +22,7 @@
                     </tr>
                     <tr>
                         <td scope="col">Дата создания</td>
-                        <td class="col">${page.getUrl().getCreatedAt().toString().substring(0, 16)}</td>
+                        <td class="col">${page.getUrl().getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))}</td>
                     </tr>
                 </tbody>
             </table>
