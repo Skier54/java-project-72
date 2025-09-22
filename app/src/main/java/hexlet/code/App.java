@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class App {
     public static int getPort() {
         String port = System.getenv().getOrDefault("PORT", "7070");
-        return Integer.parseInt(port);
+        return Integer.valueOf(port);
     }
 
     private static String readResourceFile(String fileName) throws IOException {
