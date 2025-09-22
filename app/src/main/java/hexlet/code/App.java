@@ -26,9 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class App {
-    private static int getPort() {
-        String port = System.getenv().getOrDefault("PORT", "7070");
-        return Integer.valueOf(port);
+    public static int getPort() {
+        String port = System.getenv().getOrDefault("DB_PORT", "7070");
+        return Integer.parseInt(port);
     }
 
     private static String readResourceFile(String fileName) throws IOException {
@@ -53,6 +53,10 @@ public class App {
 
         var hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(jdbcUrl);
+        hikariConfig.setMaximumPoolSize(10);
+        hikariConfig.setMinimumIdle(5);
+        hikariConfig.setIdleTimeout(30000);
+        hikariConfig.setConnectionTimeout(30000);
 
         var dataSource = new HikariDataSource(hikariConfig);
         var sql = readResourceFile("schema.sql");
