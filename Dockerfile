@@ -2,9 +2,9 @@ FROM gradle:8.10-jdk23
 
 WORKDIR /app
 
-RUN ./gradlew --no-daemon dependencies
-
 COPY /app .
+
+RUN ./gradlew --no-daemon dependencies
 
 RUN ./gradlew --no-daemon build -x test
 
