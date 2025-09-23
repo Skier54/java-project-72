@@ -4,11 +4,6 @@ FROM gradle:8.10-jdk23 AS builder
 # Рабочая директория
 WORKDIR /app
 
-# Копируем файлы Gradle
-COPY gradlew .
-COPY gradle/wrapper/ gradle/wrapper/
-COPY build.gradle settings.gradle .
-
 # Копируем исходники
 COPY /app .
 
@@ -29,4 +24,5 @@ ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -XX:InitialRAM
 
 # Запуск приложения
 ENTRYPOINT ["java", "$JAVA_OPTS", "-jar", "app.jar"]
+
 
