@@ -10,7 +10,7 @@ COPY gradle/wrapper/ gradle/wrapper/
 COPY build.gradle settings.gradle .
 
 # Копируем исходники
-COPY src/ src/
+COPY /app .
 
 # Собираем проект
 RUN ./gradlew --no-daemon build -x test
@@ -29,3 +29,4 @@ ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -XX:InitialRAM
 
 # Запуск приложения
 ENTRYPOINT ["java", "$JAVA_OPTS", "-jar", "app.jar"]
+
