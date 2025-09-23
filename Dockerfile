@@ -1,21 +1,31 @@
-FROM eclipse-temurin:23-jdk
+# Базовый образ
+FROM gradle:8.10-jdk23 AS builder
+
+# Рабочая директория
 WORKDIR /app
 
-# Установите конкретную версию Gradle
-RUN curl -fsSL https://services.gradle.org/distributions/gradle-8.10-bin.zip \
-    -o gradle-8.10-bin.zip && \
-    unzip gradle-8.10-bin.zip -d /opt/gradle && \
-    rm gradle-8.10-bin.zip && \
-    export PATH=$PATH:/opt/gradle/gradle-8.10/bin
-
+# Копируем файлы Gradle
 COPY gradlew .
 COPY gradle/wrapper/ gradle/wrapper/
-COPY build.gradle settings.gradle ./
-RUN chmod +x gradlew
-RUN ./gradlew dependencies
+COPY build.gradle settings.gradle .
 
+# Копируем исходники
 COPY src/ src/
-RUN ./gradlew build -x test
 
-ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=60.0 -XX:InitialRAMPercentage=50.0"
+# Собираем проект
+RUN ./gradlew --no-daemon build -x test
+
+# Второй этап - финальный образ
+FROM eclipse-temurin:23-jdk
+
+# Рабочая директория
+WORKDIR /app
+
+# Копируем собранный jar
+COPY --from=builder /app/build/libs/*.jar ./app.jar
+
+# Настройки JVM
+ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -XX:InitialRAMPercentage=50.0"
+
+# Запуск приложения
 ENTRYPOINT ["java", "$JAVA_OPTS", "-jar", "app.jar"]
