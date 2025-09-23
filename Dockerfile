@@ -1,18 +1,12 @@
-FROM gradle:8.10-jdk23
+FROM gradle:8.10-jdk17
 
 WORKDIR /app
 
-COPY app/gradle gradle
-COPY app/build.gradle.kts .
-COPY app/settings.gradle.kts .
-COPY app/gradlew .
+COPY /app .
 
-RUN ./gradlew --no-daemon dependencies
+RUN ["./gradlew", "clean", "build"]
 
-COPY app/src src
-COPY app/config config
-
-RUN ./gradlew --no-daemon build
 ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -XX:InitialRAMPercentage=50.0"
-EXPOSE 7070
+
 CMD ["./gradlew", "run"]
+
