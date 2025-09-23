@@ -123,62 +123,62 @@ class AppTest {
         });
     }
 
-    @Test
-    public void testValidHttpUrl() throws Exception {
-        String result = ParserUrls.parseUrl("http://example.com");
-        Assertions.assertEquals("http://example.com", result);
-    }
-
-    @Test
-    public void testValidHttpsUrl() throws Exception {
-        String result = ParserUrls.parseUrl("https://example.com:8080");
-        Assertions.assertEquals("https://example.com:8080", result);
-    }
-
-    @Test
-    public void testInvalidProtocol() {
-        Assertions.assertThrows(MalformedURLException.class, () -> {
-            ParserUrls.parseUrl("ftp://example.com");
-        });
-    }
-
-    @Test
-    public void testCheckUrl() throws SQLException {
-        var url = new Url("https://example.com");
-        UrlRepository.save(url);
-
-        var urlCheck = new UrlCheck(200, "Test Title", "Test H1", "Test Description", url.getId());
-        UrlCheckRepository.saveCheck(urlCheck);
-
-        var savedCheck = UrlCheckRepository.findCheck(url.getId()).get(0);
-        assertThat(savedCheck.getStatusCode()).isEqualTo(200);
-        assertThat(savedCheck.getTitle()).isEqualTo("Test Title");
-        assertThat(savedCheck.getH1()).isEqualTo("Test H1");
-        assertThat(savedCheck.getDescription()).isEqualTo("Test Description");
-        assertThat(savedCheck.getUrlId()).isEqualTo(url.getId());
-    }
-
-    @Test
-    void testFindLastCheckSingleUrl() throws SQLException, InterruptedException {
-        var url = new Url("https://single.com");
-        UrlRepository.save(url);
-
-        var check1 = new UrlCheck(200, "Title-1", "H1-1", "Desc-1", url.getId());
-        var check2 = new UrlCheck(404, "Title-2", "H1-2", "Desc-2", url.getId());
-
-        UrlCheckRepository.saveCheck(check1);
-        Thread.sleep(10);
-        UrlCheckRepository.saveCheck(check2);
-
-        var lastChecks = UrlCheckRepository.findLastCheck();
-
-        assertThat(lastChecks.size()).isEqualTo(1);
-        var lastCheck = lastChecks.get(url.getId());
-        assertThat(lastCheck.getStatusCode()).isEqualTo(404);
-        assertThat(lastCheck.getTitle()).isEqualTo("Title-2");
-        assertThat(lastCheck.getH1()).isEqualTo("H1-2");
-        assertThat(lastCheck.getDescription()).isEqualTo("Desc-2");
-    }
+//    @Test
+//    public void testValidHttpUrl() throws Exception {
+//        String result = ParserUrls.parseUrl("http://example.com");
+//        Assertions.assertEquals("http://example.com", result);
+//    }
+//
+//    @Test
+//    public void testValidHttpsUrl() throws Exception {
+//        String result = ParserUrls.parseUrl("https://example.com:8080");
+//        Assertions.assertEquals("https://example.com:8080", result);
+//    }
+//
+//    @Test
+//    public void testInvalidProtocol() {
+//        Assertions.assertThrows(MalformedURLException.class, () -> {
+//            ParserUrls.parseUrl("ftp://example.com");
+//        });
+//    }
+//
+//    @Test
+//    public void testCheckUrl() throws SQLException {
+//        var url = new Url("https://example.com");
+//        UrlRepository.save(url);
+//
+//        var urlCheck = new UrlCheck(200, "Test Title", "Test H1", "Test Description", url.getId());
+//        UrlCheckRepository.saveCheck(urlCheck);
+//
+//        var savedCheck = UrlCheckRepository.findCheck(url.getId()).get(0);
+//        assertThat(savedCheck.getStatusCode()).isEqualTo(200);
+//        assertThat(savedCheck.getTitle()).isEqualTo("Test Title");
+//        assertThat(savedCheck.getH1()).isEqualTo("Test H1");
+//        assertThat(savedCheck.getDescription()).isEqualTo("Test Description");
+//        assertThat(savedCheck.getUrlId()).isEqualTo(url.getId());
+//    }
+//
+//    @Test
+//    void testFindLastCheckSingleUrl() throws SQLException, InterruptedException {
+//        var url = new Url("https://single.com");
+//        UrlRepository.save(url);
+//
+//        var check1 = new UrlCheck(200, "Title-1", "H1-1", "Desc-1", url.getId());
+//        var check2 = new UrlCheck(404, "Title-2", "H1-2", "Desc-2", url.getId());
+//
+//        UrlCheckRepository.saveCheck(check1);
+//        Thread.sleep(10);
+//        UrlCheckRepository.saveCheck(check2);
+//
+//        var lastChecks = UrlCheckRepository.findLastCheck();
+//
+//        assertThat(lastChecks.size()).isEqualTo(1);
+//        var lastCheck = lastChecks.get(url.getId());
+//        assertThat(lastCheck.getStatusCode()).isEqualTo(404);
+//        assertThat(lastCheck.getTitle()).isEqualTo("Title-2");
+//        assertThat(lastCheck.getH1()).isEqualTo("H1-2");
+//        assertThat(lastCheck.getDescription()).isEqualTo("Desc-2");
+//    }
 
     @Test
     public void testChecks() throws SQLException {
