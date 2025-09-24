@@ -11,7 +11,6 @@ import io.javalin.testtools.JavalinTest;
 import io.micrometer.core.instrument.util.IOUtils;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-//import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -123,41 +122,22 @@ class AppTest {
         });
     }
 
-//    @Test
-//    public void testValidHttpUrl() throws Exception {
-//        String result = ParserUrls.parseUrl("http://example.com");
-//        Assertions.assertEquals("http://example.com", result);
-//    }
-//
-//    @Test
-//    public void testValidHttpsUrl() throws Exception {
-//        String result = ParserUrls.parseUrl("https://example.com:8080");
-//        Assertions.assertEquals("https://example.com:8080", result);
-//    }
-//
-//    @Test
-//    public void testInvalidProtocol() {
-//        Assertions.assertThrows(MalformedURLException.class, () -> {
-//            ParserUrls.parseUrl("ftp://example.com");
-//        });
-//    }
-//
-//    @Test
-//    public void testCheckUrl() throws SQLException {
-//        var url = new Url("https://example.com");
-//        UrlRepository.save(url);
-//
-//        var urlCheck = new UrlCheck(200, "Test Title", "Test H1", "Test Description", url.getId());
-//        UrlCheckRepository.saveCheck(urlCheck);
-//
-//        var savedCheck = UrlCheckRepository.findCheck(url.getId()).get(0);
-//        assertThat(savedCheck.getStatusCode()).isEqualTo(200);
-//        assertThat(savedCheck.getTitle()).isEqualTo("Test Title");
-//        assertThat(savedCheck.getH1()).isEqualTo("Test H1");
-//        assertThat(savedCheck.getDescription()).isEqualTo("Test Description");
-//        assertThat(savedCheck.getUrlId()).isEqualTo(url.getId());
-//    }
-//
+    @Test
+    public void testCheckUrl() throws SQLException {
+        var url = new Url("https://example.com");
+        UrlRepository.save(url);
+
+        var urlCheck = new UrlCheck(200, "Test Title", "Test H1", "Test Description", url.getId());
+        UrlCheckRepository.saveCheck(urlCheck);
+
+        var savedCheck = UrlCheckRepository.findCheck(url.getId()).get(0);
+        assertThat(savedCheck.getStatusCode()).isEqualTo(200);
+        assertThat(savedCheck.getTitle()).isEqualTo("Test Title");
+        assertThat(savedCheck.getH1()).isEqualTo("Test H1");
+        assertThat(savedCheck.getDescription()).isEqualTo("Test Description");
+        assertThat(savedCheck.getUrlId()).isEqualTo(url.getId());
+    }
+
     @Test
     void testFindLastCheckSingleUrl() throws SQLException, InterruptedException {
         var url = new Url("https://single.com");
